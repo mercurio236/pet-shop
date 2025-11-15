@@ -29,10 +29,6 @@ export const PeriodSection = ({ period }: PeriodSectionProps) => {
       {period.appointments.length ? (
         <div className="px-5">
           <div>
-            <div className="grid grid-cols-2 md:hidden text-label-small-size text-content-secondary m-2">
-              <p className="text-left">Horário</p>
-              <p className="text-right">Paciente</p>
-            </div>
             {period.appointments.map((appointment, index) => (
               <AppointmentCard
                 key={index}
