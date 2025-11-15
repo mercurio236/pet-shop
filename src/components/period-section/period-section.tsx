@@ -1,5 +1,6 @@
 import { AppointmentPeriod } from "@/types/appointments";
 import { Cloudy, Moon, Sun } from "lucide-react";
+import { AppointmentCard } from "../appointment-card";
 
 type PeriodSectionProps = {
   period: AppointmentPeriod;
@@ -25,6 +26,21 @@ export const PeriodSection = ({ period }: PeriodSectionProps) => {
           {period.timeRange}
         </span>
       </div>
+      {period.appointments.length ? (
+        <div className="px-5">
+          <div>
+            <div className="grid grid-cols-2 md:hidden text-label-small-size text-content-secondary m-2">
+              <p className="text-left">Horário</p>
+              <p className="text-right">Paciente</p>
+            </div>
+            {period.appointments.map((appointment, index) => (
+              <AppointmentCard key={index} appointment={appointment} />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <p>Nenhum agendamento para este período</p>
+      )}
     </section>
   );
 };
