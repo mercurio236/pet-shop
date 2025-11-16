@@ -24,9 +24,14 @@ function groupAppointmentByPeriod(
     period: getPeriod(apt.scheduleAt.getHours()),
   }));
 
-  let period: AppointmentPeriodDay[] = ["afternoon", "evening", "morning"];
-  const filterAppointments = transformAppointment.filter((apt) =>
-    period.includes(apt.period as AppointmentPeriodDay)
+  const morning = transformAppointment.filter(
+    (morning) => morning.period === "morning"
+  );
+  const afternoon = transformAppointment.filter(
+    (afternoon) => afternoon.period === "afternoon"
+  );
+  const evening = transformAppointment.filter(
+    (evening) => evening.period === "evening"
   );
 
   return [
@@ -34,19 +39,19 @@ function groupAppointmentByPeriod(
       title: "Manhã",
       type: "morning",
       timeRange: "09h-12h",
-      appointments: filterAppointments,
+      appointments: morning,
     },
     {
       title: "Tarde",
       type: "afternoon",
       timeRange: "13h-18h",
-      appointments: filterAppointments,
+      appointments: afternoon,
     },
     {
       title: "Noite",
       type: "evening",
       timeRange: "19h-21h",
-      appointments: filterAppointments,
+      appointments: evening,
     },
   ];
 }

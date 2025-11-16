@@ -3,11 +3,11 @@ import { PeriodSection } from "@/components/period-section";
 import { prisma } from "@/lib/prisma";
 
 import { groupAppointmentByPeriod } from "@/utils/appointment-utils";
-import { appointments } from "@/utils/mock-data";
 
 export default async function Home() {
-  //const appoint = await prisma.appointment.findMany();
-  const periods = groupAppointmentByPeriod(appointments);
+  const appoint = await prisma.appointment.findMany();
+  const periods = groupAppointmentByPeriod(appoint);
+
   return (
     <div className="bg-background-primary p-6">
       <div className="flex items-center justify-between mb-8">

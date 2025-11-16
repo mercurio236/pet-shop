@@ -44,6 +44,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { toast } from "sonner";
+import { createAppointment } from "@/app/actions/createAppointment";
+import { useState } from "react";
 
 const appointmentFormSchema = z
   .object({
@@ -83,6 +86,7 @@ const maskPhone = {
 };
 
 export const AppointmentForm = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const refPhone = useMask(maskPhone);
   const form = useForm<AppointmensFormValues>({
     resolver: zodResolver(appointmentFormSchema),
@@ -96,12 +100,30 @@ export const AppointmentForm = () => {
     },
   });
 
-  const onSubmit = (data: AppointmensFormValues) => {
-    console.log(data);
+  const onSubmit = async (data: AppointmensFormValues) => {
+    const [hour, minutes] = data.time.split(":");
+
+    const scheduleAt = new Date(data.scheduleAt);
+    scheduleAt.setHours(Number(hour), Number(minutes), 0, 0);
+
+    const result = await createAppointment({
+      ...data,
+      scheduleAt,
+    });
+
+    if (result?.error) {
+      toast.error(result.error);
+      return;
+    }
+
+    toast.success(`Agendamento cirado com sucesso!`);
+
+    setIsOpen(false);
+    form.reset();
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="brand">Novo agendamento</Button>
       </DialogTrigger>
